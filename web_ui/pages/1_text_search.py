@@ -38,7 +38,8 @@ def product_search(query,
                 language: str = '',
                 productIdName: str = '',
                 description: str= '',
-                keywords: str=''
+                keywords: str='',
+                long_desc: str = '',
                 ):
     url = invoke_url + '/text_search?'
     url += ('&query='+query)
@@ -64,7 +65,9 @@ def product_search(query,
         url += ('&description='+description)
     if len(keywords) > 0:
         url += ('&keywords='+keywords)
-    
+    if len(long_desc) > 0:
+        url += ('&long_desc='+long_desc)
+
     print('url:',url)
     response = requests.get(url)
     result = response.text
@@ -108,6 +111,7 @@ with st.sidebar:
     item_name_coloum_name = st.text_input(label="Item coloum name", value="NAME")
     Description_coloum_name = st.text_input(label="Description coloum name", value="SHORT_DESCRIPTION")
     Keywords_coloum_name = st.text_input(label="Keywords coloum name", value="KEYWORDS")
+    long_desc_coloum_name = st.text_input(label="Long Description coloum name", value="LONG_DESCRIPTION")
 
 # Add a button to start a new chat
 st.sidebar.button("New Query", on_click=new_query, type='primary')
@@ -124,8 +128,9 @@ if st.session_state.query:
     elif len(index) == 0:
         st.write("Opensearch index is None")
         
-    elif len(item_name_coloum_name) == 0 and len(Description_coloum_name) == 0 and len(Keywords_coloum_name) == 0:
-        st.write("item_name_coloum_name,Description_coloum_name and and Keywords_coloum_name aleast one is not None")
+    elif len(item_name_coloum_name) == 0 and len(Description_coloum_name) == 0 and len(Keywords_coloum_name) == 0\
+            and len(long_desc_coloum_name) == 0:
+        st.write("item_name_coloum_name,Description_coloum_name,Keywords_coloum_name and long_desc aleast one is not None")
     
     else:
         products = product_search(st.session_state.query,
@@ -140,7 +145,8 @@ if st.session_state.query:
                                   vectorScoreThresholds,
                                   productIdName=item_name_coloum_name,
                                   description=Description_coloum_name,
-                                  keywords=Keywords_coloum_name
+                                  keywords=Keywords_coloum_name,
+                                  long_desc=long_desc_coloum_name
                                  )
                 
         items_num = len(products)
