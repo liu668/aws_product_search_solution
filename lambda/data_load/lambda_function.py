@@ -83,7 +83,7 @@ def lambda_handler(event, context):
         
         
         csvfile=open(localFile,mode='r',encoding='utf-8')
-        reader = [each for each in csv.DictReader(csvfile, delimiter=',')]
+        reader = [each for each in csv.DictReader(csvfile, delimiter=',') if each['STATUS'] != '0']
         
         
         for line in reader:
