@@ -132,7 +132,7 @@ with st.sidebar:
     text_endpoint_name = ''
     if load_type.find('text') >=0:
         text_endpoint_name = st.selectbox("Please Select text embedding sagemaker endpoint", sagemaker_endpoint)
-        text_coloum_name = st.text_input("Text embedding coloum name,Separate multiple fields using: ,","NAME,KEYWORDS,SHORT_DESCRIPTION")
+        text_coloum_name = st.text_input("Text embedding coloum name,Separate multiple fields using: ,","NAME,KEYWORDS,SHORT_DESCRIPTION,LONG_DESC,SIN,SKU")
     
     image_coloum_name = ''
     image_endpoint_name = ''

@@ -64,6 +64,9 @@ cdk synth
 If everything is good, then
 ```
 cdk deploy --all --require-approval never
+cdk deploy TextSearchStack
+cdk deploy DataLoadStack
+
 ```
 
 ### 6. The CDK deployment will provide CloudFormation stacks with relevant resouces like Lambda, API Gateway and SageMaker notebook etc.
