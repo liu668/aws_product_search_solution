@@ -6,7 +6,7 @@ import boto3
 
 
 def text_search(index: str, search_term: str, name: str = '', keyworks: str = '', description: str = '',
-                long_desc: str = '', size: int = 10):
+                long_desc: str = '',sin: str = '',sku: str = '', size: int = 10):
     client = get_opensearch_client()
     offset = 0
     collapse_size = int(max(size / 15, 15))
@@ -40,6 +40,12 @@ def text_search(index: str, search_term: str, name: str = '', keyworks: str = ''
     if len(long_desc) > 0:
         long_desc_query = {"match_bool_prefix": {"metadata." + long_desc: {"query": search_term, "boost": 1}}}
         body['query']['dis_max']['queries'].append(long_desc_query)
+    if len(sin) > 0:
+        sin_query = {"match_bool_prefix": {"metadata." + sin: {"query": search_term, "boost": 1}}}
+        body['query']['dis_max']['queries'].append(sin_query)
+    if len(sku) > 0:
+        sku_query = {"match_bool_prefix": {"metadata." + sku: {"query": search_term, "boost": 1}}}
+        body['query']['dis_max']['queries'].append(sku_query)
 
     results = client.search(index=index, body=body)
 
@@ -140,7 +146,14 @@ def lambda_handler(event, context):
     if "long_desc" in evt_body.keys():
         long_desc = evt_body['long_desc']
     print('long_desc',long_desc)
-
+    sin=""
+    if "sin" in evt_body.keys():
+        sin = evt_body['sin']
+    print('sin',sin)
+    sku=""
+    if "sku" in evt_body.keys():
+        sku = evt_body['sku']
+    print('sku',sku)
     task = 'search'
     if "task" in evt_body.keys():
         task = evt_body['task']

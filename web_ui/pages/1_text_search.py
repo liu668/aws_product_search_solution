@@ -40,6 +40,8 @@ def product_search(query,
                 description: str= '',
                 keywords: str='',
                 long_desc: str = '',
+                sin: str = '',
+                sku: str = '',
                 ):
     url = invoke_url + '/text_search?'
     url += ('&query='+query)
@@ -67,6 +69,10 @@ def product_search(query,
         url += ('&keywords='+keywords)
     if len(long_desc) > 0:
         url += ('&long_desc='+long_desc)
+    if len(sin) > 0:
+        url += ('&sin='+sin)
+    if len(sku) > 0:
+        url += ('&sku='+sku)
 
     print('url:',url)
     response = requests.get(url)
@@ -112,6 +118,8 @@ with st.sidebar:
     Description_coloum_name = st.text_input(label="Description coloum name", value="SHORT_DESCRIPTION")
     Keywords_coloum_name = st.text_input(label="Keywords coloum name", value="KEYWORDS")
     long_desc_coloum_name = st.text_input(label="Long Description coloum name", value="LONG_DESCRIPTION")
+    sin_coloum_name = st.text_input(label="SIN coloum name", value="SIN")
+    sku_coloum_name = st.text_input(label="SKU coloum name", value="SKU")
 
 # Add a button to start a new chat
 st.sidebar.button("New Query", on_click=new_query, type='primary')
@@ -146,7 +154,9 @@ if st.session_state.query:
                                   productIdName=item_name_coloum_name,
                                   description=Description_coloum_name,
                                   keywords=Keywords_coloum_name,
-                                  long_desc=long_desc_coloum_name
+                                  long_desc=long_desc_coloum_name,
+                                  sin=sin_coloum_name,
+                                  sku=sku_coloum_name
                                  )
                 
         items_num = len(products)
